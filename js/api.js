@@ -65,6 +65,6 @@ let loadInocar = () => {
         /* CARGAR DATA DESDE LA MEMORIA */
         load(JSON.parse(meteo))
       }
-      
+      loadInocar();
     }
 )();
