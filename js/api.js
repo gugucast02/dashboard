@@ -29,25 +29,37 @@ let plot = (data) => {
   elevacion.innerHTML = data["elevation"];
 }
 
+let loadTablaMarea = (data) => {
+  const parser = new DOMParser();
+  const xml = parser.parseFromString(data, "text/html");
+  let contenedorMareas = xml.getElementsByClassName('container-fluid')[0];
+  let contenedorHTML = document.getElementById('table-container');
+  contenedorHTML.innerHTML = contenedorMareas.innerHTML;
+}
+
 let load = (data) => { 
    plot(data);
 }
 
 let loadInocar = () => {
-  let URL_proxy = 'https://cors-anywhere.herokuapp.com/';
-  let URL = URL_proxy+'https://www.inocar.mil.ec/mareas/consultan.php';
-  fetch(URL)
-     	.then(response => response.text())
-        .then(data => {
-           const parser = new DOMParser();
-           const xml = parser.parseFromString(data, "text/html");
-           let contenedorMareas = xml.getElementsByClassName('container-fluid')[0];
-           let contenedorHTML = document.getElementById('table-container');
-           contenedorHTML.innerHTML = contenedorMareas.innerHTML;
-        })
-        .catch(console.error);
+  let mareas = localStorage.getItem('mareas');
+  if(mareas == null){
+    let URL_proxy = 'https://cors-anywhere.herokuapp.com/';
+    let URL = URL_proxy+'https://www.inocar.mil.ec/mareas/consultan.php';
+    fetch(URL)
+      .then(response => response.text())
+      .then(data => {
+        /* GUARDAMOS LA DATA EN LA MEMORIA*/
+        localStorage.setItem("mareas", JSON.stringify(data))
+      })
+      .catch(console.error);
+  } else{
+    /*CARGAR DATA DESDE LA MEMORIA*/
+    loadTablaMarea(JSON.parse(mareas))
+  }
 }
 
+/*FUNCION AUTOEJECUTABLE*/
 (
     function () {
       let meteo = localStorage.getItem('meteo');
