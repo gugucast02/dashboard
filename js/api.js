@@ -34,7 +34,7 @@ let loadTablaMarea = (data) => {
   const xml = parser.parseFromString(data, "text/html");
   let contenedorMareas = xml.getElementsByClassName('container-fluid')[0];
   let contenedorHTML = document.getElementById('table-container');
-  contenedorHTML.innerHTML = contenedorMareas.innerHTML;
+  contenedorHTML.innerHTML = contenedorMareas;
 }
 
 let load = (data) => { 
